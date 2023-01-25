@@ -15,7 +15,7 @@ async def isRunViewBot(target):
     if target in check:
         print(check)
         async with async_playwright() as go:
-            browser = await go.firefox.launch(headless=False)
+            browser = await go.firefox.launch(headless=True)
             while True:
                 try:
                     page = await browser.new_page()
