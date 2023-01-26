@@ -3,6 +3,7 @@ import asyncio
 import threading
 import os
 from playwright.async_api import async_playwright
+import re
 
 
 async def isRunViewBot(target):
@@ -11,7 +12,7 @@ async def isRunViewBot(target):
 
     check = isCheckUser(target)
 
-
+    cnt = 0
     if target in check:
         print(check)
         async with async_playwright() as go:
@@ -21,6 +22,8 @@ async def isRunViewBot(target):
                     page = await browser.new_page()
                     await page.goto(f"https://toss.me/{target}")
                     await page.reload()
+                    cnt += 1
+                    print(cnt)
                 except Exception as e:
                     return input("Unknown Error!")
     else:           
@@ -51,7 +54,12 @@ def isCheckUser(target):
 
 def main():
     target = input("TOSS ID > ")
-    threading.Thread(target=asyncio.run,args=(isRunViewBot(target),)).start()
+
+
+    if re.compile(r'[a-zA-Z]').match(target):
+        threading.Thread(target=asyncio.run,args=(isRunViewBot(target),)).start()
+    else:
+        return input("토스 아이디는 영어로만 이루어져 있습니다.")
     
 if __name__ == "__main__":
     main()
