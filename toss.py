@@ -16,15 +16,16 @@ async def isRunViewBot(target):
     if target in check:
         print(check)
         async with async_playwright() as go:
-            browser = await go.firefox.launch(headless=True)
+            browser = await go.firefox.launch(headless=False)
+            page = await browser.new_page()
             while True:
                 try:
-                    page = await browser.new_page()
                     await page.goto(f"https://toss.me/{target}")
                     await page.reload()
                     cnt += 1
-                    print(cnt)
+                    print("[SUCCESS] : "+ cnt + "명")
                 except Exception as e:
+                    print(e)
                     return input("Unknown Error!")
     else:           
         print("{}는 없는 계정 입니다.".format(target))
